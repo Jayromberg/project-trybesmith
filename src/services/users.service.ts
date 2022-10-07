@@ -9,7 +9,7 @@ export default class UserService {
   private model: UsersModel;
 
   private MyJwt;
-  
+
   private MyJoi;
 
   constructor() {
