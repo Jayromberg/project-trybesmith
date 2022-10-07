@@ -19,6 +19,8 @@ export default class UserService {
   }
 
   public async registerUser(user: Users): Promise<string> {
+    this.validateNameClasseAndPasswordRegister(user);
+    this.validateLevelRegister(user);
     const registeredUser = await this.model.create(user);
     const token = this.generateToken(registeredUser);
     return token;
@@ -50,5 +52,45 @@ export default class UserService {
     });
     const { error } = loginSchema.validate(user);
     if (error) throw new HttpException(400, error.message);
+  }
+
+  private validateNameClasseAndPasswordRegister(user: Users): Error | undefined {
+    const schema = this.MyJoi.object({
+      username: Joi.string().min(3).required(),
+      classe: Joi.string().min(3).required(),
+      password: Joi.string().min(8).required(),
+    });
+    const { error } = schema.validate(user);
+    if (!error) return undefined;
+    const [{ type }] = error.details;
+    switch (type) {
+      case 'any.required':
+        throw new HttpException(400, error.message);
+      case 'string.base':
+        throw new HttpException(422, error.message);
+      case 'string.min': 
+        throw new HttpException(422, error.message);
+      default:
+        break;
+    }
+  }
+
+  private validateLevelRegister(user: Users): Error | undefined {
+    const schema = this.MyJoi.object({
+      level: Joi.number().min(1).required(),
+    });
+    const { error } = schema.validate(user);
+    if (!error) return undefined;
+    const [{ type }] = error.details;
+    switch (type) {
+      case 'any.required':
+        throw new HttpException(400, error.message);
+      case 'number.base':
+        throw new HttpException(422, error.message);
+      case 'number.min': 
+        throw new HttpException(422, error.message);
+      default:
+        break;
+    }
   }
 }
