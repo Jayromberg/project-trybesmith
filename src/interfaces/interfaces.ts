@@ -17,3 +17,8 @@ export interface Orders {
   userId: number,
   productsIds: Array<number>, 
 }
+
+export interface Login {
+  username: string,
+  password: string
+}

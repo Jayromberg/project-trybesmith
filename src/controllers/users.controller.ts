@@ -12,4 +12,9 @@ export default class UsersController {
     const token = await this.service.registerUser(req.body);
     res.status(201).json({ token });
   }
+
+  public async login(req: Request, res: Response) {
+    const token = await this.service.login(req.body);
+    res.status(200).json({ token });
+  }
 } 

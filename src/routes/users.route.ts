@@ -6,6 +6,10 @@ const userController = new UsersController();
 
 router
   .post(
+    '/login',
+    (req, res) => userController.login(req, res),
+  )
+  .post(
     '/users',
     (req, res) => userController.registerUser(req, res),
   );
