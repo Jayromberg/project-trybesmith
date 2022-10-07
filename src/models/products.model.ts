@@ -1,5 +1,5 @@
 import { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import { Product } from '../interfaces/products.interfaces';
+import { Product } from '../interfaces/interfaces';
 
 export default class ProductModel {
   private connection: Pool;

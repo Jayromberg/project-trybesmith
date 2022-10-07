@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { Users } from '../interfaces/products.interfaces';
+import { Users } from '../interfaces/interfaces';
 import connection from '../models/connection';
 import UsersModel from '../models/users.model';
 

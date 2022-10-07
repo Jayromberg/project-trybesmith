@@ -1,0 +1,21 @@
+import { Pool, RowDataPacket } from 'mysql2/promise';
+import { Orders } from '../interfaces/interfaces';
+
+export default class OrdersModel {
+  private connection: Pool;
+
+  constructor(connection: Pool) {
+    this.connection = connection;
+  }
+
+  public async findAllOrders(): Promise<Orders[]> {
+    const [result] = await this.connection
+      .execute<Orders[] & RowDataPacket[]>(`
+        SELECT t1.*, JSON_ARRAYAGG(t2.id)  AS productsIds FROM Trybesmith.Orders t1 
+        JOIN Trybesmith.Products t2
+        ON t2.orderId = t1.id
+        GROUP BY t1.id;
+      `);    
+    return result;
+  }
+}
