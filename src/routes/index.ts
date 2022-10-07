@@ -1,8 +1,10 @@
 import { Application } from 'express';
-import productRoute from './products.route';
+import productsRoute from './products.route';
+import usersRoute from './users.route';
 
 export default (app: Application) => {
   app.use(
-    productRoute,
+    productsRoute,
+    usersRoute,
   );
 };
