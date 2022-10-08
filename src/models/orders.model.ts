@@ -1,4 +1,5 @@
-import { Pool, RowDataPacket } from 'mysql2/promise';
+import { JwtPayload } from 'jsonwebtoken';
+import { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { Orders } from '../interfaces/interfaces';
 
 export default class OrdersModel {
@@ -17,5 +18,16 @@ export default class OrdersModel {
         GROUP BY t1.id;
       `);    
     return result;
+  }
+
+  public async create(payload: JwtPayload): Promise<number> {
+    const { id } = payload;
+    const result = await this.connection.execute<ResultSetHeader>(
+      'INSERT INTO Trybesmith.Orders (userId) VALUES (?)',
+      [id],
+    );
+    const [dataInserted] = result;
+    const { insertId } = dataInserted;
+    return insertId;
   }
 }

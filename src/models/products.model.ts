@@ -24,4 +24,14 @@ export default class ProductModel {
       .execute<Product[] & RowDataPacket[]>('SELECT * FROM Trybesmith.Products');
     return result;
   }
+
+  public async update(productId: number, orderId: number): Promise<number> {
+    const result = await this.connection.execute<ResultSetHeader>(
+      'UPDATE Trybesmith.Products SET orderId = ? WHERE id = ?',
+      [orderId, productId],
+    );
+    const [dataInserted] = result;
+    const { affectedRows } = dataInserted;
+    return affectedRows;
+  }
 }
